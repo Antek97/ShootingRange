@@ -31,6 +31,9 @@ void AButtonGameplay::SetInteractPromptUI(bool bInteract)
 		if (InteractPromptUIWidget == NULL)
 		{
 			InteractPromptUIWidget = Cast<USRInteractPromptWidget>(InteractPromptWidgetComponent->GetWidget());
+		}
+		if(InteractPromptUIWidget)
+		{
 			InteractPromptUIWidget->ActivePrompt(bInteract);
 		}
 	}
