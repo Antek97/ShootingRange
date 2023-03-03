@@ -21,7 +21,6 @@ struct FWeaponProperties
 	GENERATED_USTRUCT_BODY()
 
 public:
-
 	UPROPERTY(blueprintReadOnly)
 	TSubclassOf<ASRWeapon> WeaponClass;
 
@@ -46,10 +45,9 @@ public:
 	virtual void AddDefaultWeapon();
 	
 	FSelectedWeaponChanged OnSelectedWeaponChanged;
-	
 	FWeaponAdded OnWeaponAdded;
-
 	FWeaponRemoved OnWeaponRemoved;
+
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

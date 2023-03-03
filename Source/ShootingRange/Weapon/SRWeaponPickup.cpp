@@ -40,12 +40,10 @@ void ASRWeaponPickup::Tick(float DeltaTime)
 
 void ASRWeaponPickup::HavePlayerPickup(AShootingRangeCharacter* Player)
 {
-
 	USRInventory* Inventory = Player->GetInventory();
 	Inventory->AddWeapon(WeaponClass, WeaponPower, Ammunition);
 	Inventory->SelectBestWeapon();
 
-	// and now that we've done our job, destroy ourselves
 	Destroy();
 }
 
