@@ -45,7 +45,6 @@ void ASRWeapon::Fire(FRotator ControlRotation, UAnimInstance* AnimInst, USRInven
 
 	if (AnimInst != nullptr)
 	{
-
 		if (AnimInst != nullptr)
 		{
 			AnimInst->Montage_Play(FireAnimation, 1.0f);

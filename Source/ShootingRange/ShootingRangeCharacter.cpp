@@ -21,6 +21,8 @@
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
+#include "ShootingRange/HUD/SRHudComponent.h"
+
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 AShootingRangeCharacter::AShootingRangeCharacter()
@@ -54,7 +56,7 @@ AShootingRangeCharacter::AShootingRangeCharacter()
 	L_MotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("L_MotionController"));
 
 	Inventory = CreateDefaultSubobject<USRInventory>(TEXT("Inventory"));
-
+	HudComponent = CreateDefaultSubobject<USRHudComponent>(TEXT("HudComponent"));
 }
 
 void AShootingRangeCharacter::BeginPlay()
@@ -65,6 +67,7 @@ void AShootingRangeCharacter::BeginPlay()
 	if (Inventory != nullptr)
 	{
 		Inventory->SelectBestWeapon();
+		Inventory->AddDefaultWeapon();
 	}
 	InitializeInventoryHUD();
 	InitializePlayerHUD();
@@ -176,12 +179,18 @@ void AShootingRangeCharacter::SetupPlayerInputComponent(class UInputComponent* P
 
 void AShootingRangeCharacter::SelectNextWeapon()
 {
-	Inventory->SelectNextWeapon();
+	if (Inventory != nullptr)
+	{
+		Inventory->SelectNextWeapon();
+	}
 }
 
 void AShootingRangeCharacter::SelectPreviousWeapon()
 {
-	Inventory->SelectNextWeapon();
+	if (Inventory != nullptr)
+	{
+		Inventory->SelectPreviousWeapon();
+	}
 }
 
 void AShootingRangeCharacter::Interaction()

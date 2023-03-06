@@ -41,9 +41,9 @@ void ASRWeaponPickup::Tick(float DeltaTime)
 void ASRWeaponPickup::HavePlayerPickup(AShootingRangeCharacter* Player)
 {
 	USRInventory* Inventory = Player->GetInventory();
-	Inventory->AddWeapon(WeaponClass, WeaponPower, Ammunition);
+	Inventory->AddWeapon(WeaponClass, WeaponPower, Ammunition, MaxAmmunition);
 	Inventory->SelectBestWeapon();
-
+	// ToDo: Add weapon object to Inventory
 	Destroy();
 }
 

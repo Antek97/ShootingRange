@@ -69,7 +69,6 @@ void USRInventory::SelectWeapon(FWeaponProperties Weapon)
 
 	GetOwningChar()->EquipWeapon(Weapon.WeaponClass);
 	CurrentWeapon = Weapon.WeaponClass;
-
 }
 
 int USRInventory::FindCurrentWeaponIndex() const
@@ -91,33 +90,39 @@ int USRInventory::FindCurrentWeaponIndex() const
 
 void USRInventory::SelectNextWeapon()
 {
-	int currentIndex = FindCurrentWeaponIndex();
+	if (WeaponsArray.Num() != NULL)
+	{
+		int currentIndex = FindCurrentWeaponIndex();
 
-	if (currentIndex == WeaponsArray.Num() - 1)
-	{
-		SelectWeapon(WeaponsArray[0]);
-	}
-	else
-	{
-		SelectWeapon(WeaponsArray[currentIndex + 1]);
+		if (currentIndex == WeaponsArray.Num() - 1)
+		{
+			SelectWeapon(WeaponsArray[0]);
+		}
+		else
+		{
+			SelectWeapon(WeaponsArray[currentIndex + 1]);
+		}
 	}
 }
 
 void USRInventory::SelectPreviousWeapon()
 {
-	int currentIndex = FindCurrentWeaponIndex();
+	if (WeaponsArray.Num() != NULL)
+	{
+		int currentIndex = FindCurrentWeaponIndex();
 
-	if (currentIndex > 0)
-	{
-		SelectWeapon(WeaponsArray[currentIndex - 1]);
-	}
-	else
-	{
-		SelectWeapon(WeaponsArray[WeaponsArray.Num() - 1]);
+		if (currentIndex > 0)
+		{
+			SelectWeapon(WeaponsArray[currentIndex - 1]);
+		}
+		else
+		{
+			SelectWeapon(WeaponsArray[WeaponsArray.Num() - 1]);
+		}
 	}
 }
 
-void USRInventory::AddWeapon(TSubclassOf<ASRWeapon> Weapon, int AmmoCount, uint8 WeaponPower)
+void USRInventory::AddWeapon(TSubclassOf<ASRWeapon> Weapon, uint8 WeaponPower, int AmmoCount, int MaxAmmo)
 {
 	for (auto WeaponIt = WeaponsArray.CreateIterator(); WeaponIt; ++WeaponIt)
 	{
@@ -133,6 +138,7 @@ void USRInventory::AddWeapon(TSubclassOf<ASRWeapon> Weapon, int AmmoCount, uint8
 		WeaponProps.WeaponClass = Weapon;
 		WeaponProps.WeaponPower = WeaponPower;
 		WeaponProps.Ammo = AmmoCount;
+		WeaponProps.MaxAmmo = MaxAmmo;
 
 		WeaponsArray.Add(WeaponProps);
 		OnWeaponAdded.Broadcast(WeaponProps);
@@ -140,45 +146,29 @@ void USRInventory::AddWeapon(TSubclassOf<ASRWeapon> Weapon, int AmmoCount, uint8
 
 void USRInventory::ChangeAmmo(TSubclassOf<ASRWeapon> Weapon, const int ChangeAmount) 
 {
-	for (int WeaponIt = 0; WeaponIt > WeaponsArray.Num(); ++WeaponIt)
+	OnWeaponUpdate.RemoveAll(this);
+
+	for (int WeaponIt = 0; WeaponIt < WeaponsArray.Num(); ++WeaponIt)
 	{
 		FWeaponProperties& curentProps = WeaponsArray[WeaponIt];
 		if (curentProps.WeaponClass == Weapon)
 		{
-			if (curentProps.Ammo == UNLIMITED_AMMO)
+			if (curentProps.WeaponPower == UNLIMITED_AMMO)
 			{
 				return;
 			}
 			curentProps.Ammo = FMath::Clamp(curentProps.Ammo + ChangeAmount, 0, 999);
+			OnWeaponUpdate.Broadcast(curentProps);
+
 			if (curentProps.Ammo == 0)
 			{
 				CurentWeaponPower = -1;
-				OnWeaponRemoved.Broadcast(curentProps);
+				OnWeaponRemoved.Broadcast(curentProps); 
 				WeaponsArray.RemoveAt(WeaponIt);
 				SelectBestWeapon();
 			}
 			return;
 		}
 	}
-	//for (auto WeaponIt = WeaponsArray.CreateIterator(); WeaponIt; ++WeaponIt)
-	//{
-	//	FWeaponProperties& curentProps = WeaponsArray[WeaponIt] * WeaponIt;
-	//	if (curentProps.WeaponClass == Weapon)
-	//	{
-	//		if (curentProps.Ammo == UNLIMITED_AMMO)
-	//		{
-	//			return;
-	//		}
-	//		curentProps.Ammo = FMath::Clamp(curentProps.Ammo + ChangeAmount, 0, 999);
-	//		if (curentProps.Ammo == 0)
-	//		{
-	//			CurentWeaponPower = -1;
-	//			OnWeaponRemoved.Broadcast(curentProps);
-	//			//WeaponsArray.RemoveAt(WeaponIt);
-	//			SelectBestWeapon();
-	//		}
-	//		return;
-	//	}
-	//}
 }
 

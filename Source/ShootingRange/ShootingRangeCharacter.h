@@ -10,6 +10,7 @@ class AButtonGameplay;
 class AShootingRangeGameMode;
 class AShootingRangeHUD;
 class ASRWeapon;
+class USRHudComponent;
 class USRInventory;
 class USRMainHud;
 
@@ -131,6 +132,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	USRInventory* Inventory;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	USRHudComponent* HudComponent;
+
 	virtual void SetInventory(USRInventory* Inv);
 	void InitializePlayerHUD();
 	virtual void InitializeInventoryHUD();
@@ -141,7 +145,6 @@ public:
 	void UpdateTimer(float TimeCount, float MaxTime);
 	void PrepareTimer(float TimeCount);
 	void InteractionKeyOnHud(bool bInteraction);
-
 	void UpdateBestScore(int32 ScorePoints);
 	void UpdatePointsHud(int32 Points);
 

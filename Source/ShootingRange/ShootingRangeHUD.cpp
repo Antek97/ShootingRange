@@ -87,10 +87,10 @@ void AShootingRangeHUD::PrepareTimer(float Time)
 
 void AShootingRangeHUD::InteractionKeyOnHud(bool bInteraction) 
 {
-	if (MainHudWidget)
-	{
-		MainHudWidget->InteractionKeyOnHud(bInteraction);
-	}
+	//if (MainHudWidget)
+	//{
+	//	MainHudWidget->InteractionKeyOnHud(bInteraction);
+	//}
 }
 
 void AShootingRangeHUD::UpdatePointsUI(int32 Points)

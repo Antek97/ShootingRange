@@ -14,6 +14,7 @@ class ASRWeaponPickup;
 DECLARE_EVENT_OneParam(USRInventory, FSelectedWeaponChanged, FWeaponProperties);
 DECLARE_EVENT_OneParam(USRInventory, FWeaponAdded, FWeaponProperties);
 DECLARE_EVENT_OneParam(USRInventory, FWeaponRemoved, FWeaponProperties);
+DECLARE_EVENT_OneParam(USRInventory, FWeaponUpdate, FWeaponProperties);
 
 USTRUCT(BlueprintType)
 struct FWeaponProperties
@@ -29,6 +30,9 @@ public:
 
 	UPROPERTY(blueprintReadOnly)
 	int Ammo;
+
+	UPROPERTY(blueprintReadOnly)
+	int MaxAmmo;
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -47,6 +51,7 @@ public:
 	FSelectedWeaponChanged OnSelectedWeaponChanged;
 	FWeaponAdded OnWeaponAdded;
 	FWeaponRemoved OnWeaponRemoved;
+	FWeaponUpdate OnWeaponUpdate;
 
 public:
 
@@ -64,9 +69,9 @@ public:
 	void SelectNextWeapon();
 	void SelectPreviousWeapon();
 
-	void AddWeapon(TSubclassOf<ASRWeapon> Weapon, int AmmoCount, uint8 WeaponPower);
+	void AddWeapon(TSubclassOf<ASRWeapon> Weapon, uint8 WeaponPower, int AmmoCount, int MaxAmmo);
 
-	FORCEINLINE TSubclassOf<ASRWeapon> GetCurrentWeapon()
+	TSubclassOf<ASRWeapon> GetCurrentWeapon()
 	const { return CurrentWeapon; }
 
 	void ChangeAmmo(TSubclassOf<ASRWeapon> Weapon, const int ChangeAmount);

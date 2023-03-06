@@ -15,6 +15,9 @@ class USRMainHud : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
+	USRInventory* CachedInventory = nullptr;
+
 	UPROPERTY(EditAnywhere, Category = "Hud")
 	int32 AmmoCout;
 
@@ -29,9 +32,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PrepareTimerHUD(float Time);
-	
-	UFUNCTION(BlueprintImplementableEvent)
-	void UpdateAmmoHud(int AmmoCount);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetMaxAmmo(int32 MaxAmmo);
@@ -59,4 +59,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = Inventory)
 	void WeaponRemoved(FWeaponProperties Weapon);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = Inventory)
+	void WeaponUpdate(FWeaponProperties Weapon);
+
+	virtual void BeginDestroy();
 };
